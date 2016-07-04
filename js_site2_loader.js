@@ -49,6 +49,7 @@ $(function()
     }
     
     tagContent.html(text);
+    handleShortCode();
   }
 
   var handleNaviAnchor = function(anchor)
