@@ -63,12 +63,12 @@ $(function()
         if (anchor['prev'])
         {
           var p = anchor['prev'].match(/^:/) ? '?p=' + anchor['prev'].substr(1) : anchor['prev'];
-          ul.append($('<li>').append($('<a>').text('ëOÇ÷').attr('href', p)));
+          ul.append($('<li>').append($('<a>').text('Ââç„Å∏').attr('href', p)));
         }
         if (anchor['next'])
         {
           var p = anchor['next'].match(/^:/) ? '?p=' + anchor['next'].substr(1) : anchor['next'];
-          ul.append($('<li>').append($('<a>').text('éüÇ÷').attr('href', p)));
+          ul.append($('<li>').append($('<a>').text('Ê¨°„Å∏').attr('href', p)));
         }
         break;
       case 'list':
@@ -76,8 +76,8 @@ $(function()
         {
           var i = anchor['list'].indexOf(id);
           
-          if (0 < i) ul.append($('<li>').append($('<a>').text('ëOÇ÷').attr('href', '?p=' + anchor['list'][i -1])));
-          if (i +1 < anchor['list'].length) ul.append($('<li>').append($('<a>').text('éüÇ÷').attr('href', '?p=' + anchor['list'][i +1])));
+          if (0 < i) ul.append($('<li>').append($('<a>').text('Ââç„Å∏').attr('href', '?p=' + anchor['list'][i -1])));
+          if (i +1 < anchor['list'].length) ul.append($('<li>').append($('<a>').text('Ê¨°„Å∏').attr('href', '?p=' + anchor['list'][i +1])));
         }
         break;
     }
