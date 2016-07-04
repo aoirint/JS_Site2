@@ -7,14 +7,14 @@ body
   font-weight: lighter;
 }
 
-#content
+main
 {
-  padding-left: 1.75em;
+  padding-left: 0.75em;
 }
 
-#badges
+#content
 {
-  text-align: right;
+  padding-left: 1em;
 }
 
 #navi

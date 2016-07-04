@@ -1,0 +1,11 @@
+title: About
+meta: [md]
+content: |-
+    
+    ![Sample Image](@sample.png)
+    
+    [![jQuery](https://img.shields.io/badge/lib-jQuery-yellow.svg)](https://jquery.com/)
+    [![js-yaml](https://img.shields.io/badge/lib-js--yaml-yellow.svg)](https://github.com/nodeca/js-yaml)
+    [![MathJax](https://img.shields.io/badge/lib-MathJax-yellow.svg)](https://www.mathjax.org/)
+    [![marked](https://img.shields.io/badge/lib-marked-yellow.svg)](https://github.com/chjj/marked)
+    

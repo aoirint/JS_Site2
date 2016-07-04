@@ -2,20 +2,30 @@
 
 <title>YYY Web</title>
 
-<script src="jquery-2.2.3.min.js"></script>
-<script src="js-yaml-3.6.1.min.js"></script>
+<script src="vendor/jquery-2.2.3.min.js"></script>
+<script src="vendor/js-yaml-3.6.1.min.js"></script>
 <script>
 $(function()
 {
   var p = location.search.match(/p=(.*?)(&|$)/);
+  //if (p != null && p[1] == 'index') location.href = location.href.replace(/(\?|&)p=index/, '');
   var id = p == null ? 'index' : p[1];
   
-  var addBadge = function(imgUrl, linkUrl)
+  var handleShortCode = function()
   {
-    var badge = $('<img>').addClass('badge').attr('src', imgUrl);
-    if (linkUrl) badge = $('<a>').attr('href', linkUrl).attr('target', '_brank').append(badge);
-    $('#badges').append(badge);
-  }
+    var tagContent = $('#content');
+    
+    tagContent.find('[href^=":"]').each(function()
+    {
+      $(this).attr('href', $(this).attr('href').replace(/^:/, '?p='));
+    });
+
+    tagContent.find('[src^="@"]').each(function()
+    {
+      $(this).attr('src', $(this).attr('src').replace(/^@/, 'media/'));
+    });
+
+    }
   
   var handleContent = function(data)
   {
@@ -27,15 +37,14 @@ $(function()
       if (0 <= data['meta'].indexOf('math'))
       {
         $.getScript('https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
-        addBadge('https://img.shields.io/badge/lib-MathJax-blue.svg', 'https://www.mathjax.org/');
       }
       
       if (0 <= data['meta'].indexOf('md')) 
       {
-        $.getScript('marked.js', function(script)
+        $.getScript('vendor/marked.js', function(script)
         {
           tagContent.html(marked(tagContent.html()));
-          addBadge('https://img.shields.io/badge/lib-marked-blue.svg', 'https://github.com/chjj/marked');
+          handleShortCode();
         });
       }
     }
@@ -116,8 +125,6 @@ $(function()
   <h1 id="title"></h1>
   <section id="content"></section>
 </main>
-
-<section id="badges"></section>
 
 <hr>
 
