@@ -1,0 +1,10 @@
+title: Index
+meta: [md]
+content: |-
+    INDEX PAGE
+    
+    - [MathJax](?p=math)
+    - [Markdown](?p=md)
+    - [Navi test](?p=navi)
+    - [Navi List test](?p=list1/000)
+    

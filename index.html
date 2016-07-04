@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<title>YYY Web</title>
+
+<script src="jquery-2.2.3.min.js"></script>
+<script src="js-yaml-3.6.1.min.js"></script>
+<script>
+$(function()
+{
+  var p = location.search.match(/p=(.*?)(&|$)/);
+  var id = p == null ? 'index' : p[1];
+  
+  var addBadge = function(imgUrl, linkUrl)
+  {
+    var badge = $('<img>').addClass('badge').attr('src', imgUrl);
+    if (linkUrl) badge = $('<a>').attr('href', linkUrl).attr('target', '_brank').append(badge);
+    $('#badges').append(badge);
+  }
+  
+  var handleContent = function(data)
+  {
+    var text = data['content'];
+    var tagContent = $('#content');
+    
+    if (data['meta'])
+    {
+      if (0 <= data['meta'].indexOf('math'))
+      {
+        $.getScript('http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+        addBadge('https://img.shields.io/badge/lib-MathJax-blue.svg', 'https://www.mathjax.org/');
+      }
+      
+      if (0 <= data['meta'].indexOf('md')) 
+      {
+        $.getScript('marked.js', function(script)
+        {
+          tagContent.html(marked(tagContent.html()));
+          addBadge('https://img.shields.io/badge/lib-marked-blue.svg', 'https://github.com/chjj/marked');
+        });
+      }
+    }
+    
+    tagContent.html(text);
+  }
+
+  var handleNaviAnchor = function(anchor)
+  {
+    var type = anchor['type'] || 'book';
+    
+    var ul = $('<ul>');
+    
+    switch (type)
+    {
+      case 'book':
+        if (anchor['prev'])
+        {
+          var p = anchor['prev'].match(/^:/) ? '?p=' + anchor['prev'].substr(1) : anchor['prev'];
+          ul.append($('<li>').append($('<a>').text('前へ').attr('href', p)));
+        }
+        if (anchor['next'])
+        {
+          var p = anchor['next'].match(/^:/) ? '?p=' + anchor['next'].substr(1) : anchor['next'];
+          ul.append($('<li>').append($('<a>').text('次へ').attr('href', p)));
+        }
+        break;
+      case 'list':
+        if (anchor['list'])
+        {
+          var i = anchor['list'].indexOf(id);
+          
+          if (0 < i) ul.append($('<li>').append($('<a>').text('前へ').attr('href', '?p=' + anchor['list'][i -1])));
+          if (i +1 < anchor['list'].length) ul.append($('<li>').append($('<a>').text('次へ').attr('href', '?p=' + anchor['list'][i +1])));
+        }
+        break;
+    }
+    
+    $('#navi').prepend(ul);
+  }
+  
+  var handleNavi = function(data)
+  {
+    if (data['anchor'])
+    {
+      if (data['anchor'] instanceof Object) handleNaviAnchor(data['anchor']);
+      else
+      {
+        $.get('anchors/' + data['anchor'] + '.yaml', function(raw)
+        {
+          var anchorData = jsyaml.load(raw);
+          handleNaviAnchor(anchorData);
+        });
+      }
+    }
+    
+  }
+  
+  $.get('pages/' + id + '.yaml', function(raw)
+  {
+    var data = jsyaml.load(raw);
+    
+    if (! data['title']) data['title'] = 'No title';
+    
+    $('#title').text(data['title']);
+    document.title = data['title'] + ' | ' + document.title;
+    
+    handleContent(data);
+    handleNavi(data);
+    
+  });
+});
+</script>
+
+<link rel="stylesheet" href="style.css">
+
+<main>
+  <h1 id="title"></h1>
+  <section id="content"></section>
+</main>
+
+<section id="badges"></section>
+
+<hr>
+
+<footer>
+  <small>(c) 2016 Kanomiya</small>
+</footer>
+
+<nav id="navi"><a href="?p=index">トップページ</a></nav>
